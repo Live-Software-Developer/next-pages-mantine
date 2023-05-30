@@ -17,4 +17,6 @@ This template contains a number of things:
 6. A `.gitignore` file for all your Next JS needs.
 
 - With Layouts, you can make different layouts for different pages according to your desire.
+
+If you find the repository helpful, don't forget to leave a star and make some contribution to make it more robust and useful to others.
   
