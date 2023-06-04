@@ -1,6 +1,6 @@
 import React from 'react'
 import { Anchor, Box, ActionIcon, Center, Container, Divider, Grid, Group, Image, List, Stack, Text, Title } from '@mantine/core';
-import { PRIMARY_SHADE, BLUE_DARK_COLOR, APP_NAME } from '../../config/constants';
+import { PRIMARY_SHADE, BLUE_DARK_COLOR, APP_NAME, LINK_WEIGHT } from '../../config/constants';
 import publicStyles from '../../styles/publicStyles';
 import { getTheme } from '../../config/config';
 import Link from 'next/link';
@@ -19,7 +19,7 @@ const Service = (props: ServiceProps) => {
     <List.Item icon={icon}>
       <Anchor href={href} component={Link} style={{
         textDecoration: "none"
-      }}>
+      }} weight={LINK_WEIGHT}>
         <Text color="white" size="sm">{title}</Text>
       </Anchor>
     </List.Item >

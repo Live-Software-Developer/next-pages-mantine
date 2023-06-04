@@ -1,6 +1,6 @@
 
-// export const DEFAULT_API_ROOT = 'http://127.0.0.1:8000'
-export const DEFAULT_API_ROOT = 'https://api.next-pages-mantine-template..supercodehive.com'
+export const DEFAULT_API_ROOT = 'http://127.0.0.1:8000/api'
+// export const DEFAULT_API_ROOT = 'https://api.next-pages-mantine-template..supercodehive.com'
 
 // export const DEFAULT_APP_URL = "http://localhost:3000"
 export const DEFAULT_APP_URL = "https://next-pages-mantine-template.supercodehive.com"
@@ -8,7 +8,8 @@ export const DEFAULT_APP_URL = "https://next-pages-mantine-template.supercodehiv
 export const APP_NAME = "Next JS Pages Mantine Template"
 export const SEPARATOR = "|"
 
-export const THEME_COOKIE_NAME = 'caregivers-theme'
+export const THEME_COOKIE_NAME = 'lsd-template-theme'
+export const APP_KEY = 'LSD_TEMPLATE'
 
 // App Colors
 // export const BLUE_DARK_COLOR = 'rgb(36, 42, 73)'
@@ -31,11 +32,11 @@ export const containerSize = "lg"
 
 export const URLS = {
     // AUTH
-    REGISTER: `${DEFAULT_API_ROOT}/users`,
+    REGISTER: `${DEFAULT_API_ROOT}/account`,
     LOGIN: `${DEFAULT_API_ROOT}/auth/login`,
-    REQUEST_PASSWORD_RESET: `${DEFAULT_API_ROOT}/auth/password/reset`,
-    PASSWORD_RESET_CONFIRM: `${DEFAULT_API_ROOT}/auth/password/reset/confirm`,
-    PASSWORD_RESET_VALIDATE_TOKEN: `${DEFAULT_API_ROOT}/auth/password/reset/validate-token`,
+    REQUEST_PASSWORD_RESET: `${DEFAULT_API_ROOT}/auth/password-reset`,
+    PASSWORD_RESET_CONFIRM: `${DEFAULT_API_ROOT}/auth/password-reset/confirm`,
+    PASSWORD_RESET_VALIDATE_TOKEN: `${DEFAULT_API_ROOT}/auth/password-reset/validate-token`,
 
     // CONTACT
     CONTACT: `${DEFAULT_API_ROOT}/contact`,
@@ -57,7 +58,7 @@ export const URLS = {
     HOSTING_PLANS: `${DEFAULT_API_ROOT}/hosting/plans`,
 
     // USERS
-    USERS: `${DEFAULT_API_ROOT}/users`,
+    USERS: `${DEFAULT_API_ROOT}/account`,
 
     // MEDIA
     IMAGES: `${DEFAULT_API_ROOT}/images`,
@@ -99,3 +100,5 @@ export const EMOJIS = {
 }
 
 export const DEFAULT_MEDIA_PAGE_SIZE = 25
+
+export const LINK_WEIGHT = 500

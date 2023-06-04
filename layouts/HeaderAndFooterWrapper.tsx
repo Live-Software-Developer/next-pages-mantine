@@ -142,7 +142,7 @@ const HeaderAndFooterWrapper = ({ children }: NavbarAndFooterWrapperProps) => {
                                 />
                             </MediaQuery>
 
-                            <img src={getTheme(theme) ? '/logo_PRIMARY_SHADE.png' : '/logo_black_small.png'} className={classes.image} />
+                            <img src={getTheme(theme) ? '/logo_orange.png' : '/logo_black_small.png'} className={classes.image} />
                         </div>
                         {matches ? null : (
                             <div>

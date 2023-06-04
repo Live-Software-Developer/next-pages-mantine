@@ -2,12 +2,14 @@ import React, { createContext, useReducer } from 'react';
 import { showNotification } from '@mantine/notifications';
 import { IconAlertCircle } from '@tabler/icons';
 import { getCookie, setCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
+import { APP_KEY } from '../config/constants';
 
 export const LOCAL_STORAGE_KEYS = {
-    user: 'caregivers_user',
-    user_id: 'caregivers_user_id',
-    token: 'caregivers_token',
-    login_status: 'caregivers_login_status',
+    user: `${APP_KEY}_user`,
+    user_id: `${APP_KEY}_user_id`,
+    token: `${APP_KEY}_token`,
+    login_status: `${APP_KEY}_login_status`,
 }
 
 interface AppContextProps {
@@ -65,7 +67,9 @@ export const useAppContext = () => {
 
 
 const AppProvider = (props: any) => {
-    
+
+    const router = useRouter()
+
     const user = getCookie(LOCAL_STORAGE_KEYS.user) || initialAppContext.user;
     const token = getCookie(LOCAL_STORAGE_KEYS.token) || initialAppContext.token;
     const userID = getCookie(LOCAL_STORAGE_KEYS.user_id) || initialAppContext.user_id;
@@ -81,6 +85,7 @@ const AppProvider = (props: any) => {
     }
 
     const handleLogin = (user: any, token: any) => {
+        console.log(user, token)
         cookieSetter(LOCAL_STORAGE_KEYS.user, user);
         cookieSetter(LOCAL_STORAGE_KEYS.user_id, user?.id);
         cookieSetter(LOCAL_STORAGE_KEYS.token, token);
@@ -95,14 +100,13 @@ const AppProvider = (props: any) => {
         });
         showNotification({
             title: "Account login",
-            message: "You have logged in successfully",
-            color: "blue",
+            message: "You have logged in successfully!",
+            color: "green",
             icon: <IconAlertCircle />
         })
     };
 
     const handleLogout = () => {
-        // setUser(null);
         cookieSetter(LOCAL_STORAGE_KEYS.user, null);
         cookieSetter(LOCAL_STORAGE_KEYS.user_id, null);
         cookieSetter(LOCAL_STORAGE_KEYS.token, null);
@@ -116,13 +120,8 @@ const AppProvider = (props: any) => {
             color: "blue",
             icon: <IconAlertCircle />
         })
+        router.push('/auth/login')
     };
-
-    // useEffect(() => {
-    //     if (user && token) {
-    //         handleLogin(user, token);
-    //     }
-    // }, []);
 
 
     return (

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { isArray } from 'util';
+import { isArray, isObject } from 'util';
 
 const searchDomains = async (domainName) => {
     const IDENTIFIER = "234lRlbtBUkJUhy9cNk8Kw82FZax3Q6C"
@@ -42,6 +42,7 @@ export function getTitleOrder(order) {
 }
 
 export function displayErrors(form, errors, parentKey = null) {
+    console.log(errors)
     for (const field in errors) {
         if (errors.hasOwnProperty(field)) {
             const key = parentKey ? `${parentKey}.${field}` : field;
@@ -50,7 +51,7 @@ export function displayErrors(form, errors, parentKey = null) {
             if (isArray(value)){
                 form.setFieldError(key, value?.join(", "))
             }
-            else{
+            else if (isObject(value)){
                 displayErrors(form, value, key);
             }
         }

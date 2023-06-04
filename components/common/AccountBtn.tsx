@@ -47,10 +47,10 @@ function AccountBtn() {
                             <Menu.Item icon={<IconSettings size={14} />}>Account Settings</Menu.Item>
                             <Menu.Item icon={<IconQuote size={14} />}>My Reviews</Menu.Item>
                             <Menu.Item icon={<IconMessage size={14} />}>My Comments</Menu.Item>
-                            <Menu.Divider />
                             {
                                 loggedInUser?.is_superuser ? (
                                     <>
+                                        <Menu.Divider />
                                         <Menu.Item component={Link} href="/admin" icon={<IconDashboard size={14} />}>Admin</Menu.Item>
                                         <Menu.Item component={Link} href="/articles/create" icon={<IconArticle size={14} />}>Write an Article</Menu.Item>
                                         <Menu.Item component={Link} href="/admin/assets" icon={<IconPhoto size={14} />}>Media</Menu.Item>

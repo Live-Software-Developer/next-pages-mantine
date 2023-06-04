@@ -553,7 +553,7 @@
   dependencies:
     "@mantine/utils" "6.0.13"
 
-"@mantine/prism@^6.0.10":
+"@mantine/prism@^6.0.13":
   version "6.0.13"
   resolved "https://registry.yarnpkg.com/@mantine/prism/-/prism-6.0.13.tgz#ef840bf2cd59d567db203bba167e9c77155eda39"
   integrity sha512-048dxoEw4XeJAVh8sBzMguhk+pG8ULDPVGI+aQBsuoERezSV4WVqeKl1+ddoOew3qXbsH/UH4ox5lmf1S4WTwg==

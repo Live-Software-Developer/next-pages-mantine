@@ -6,17 +6,16 @@ import { CallToActionButtonAction } from '../../components/cta/CallToActionButto
 import { IconAlertCircle, IconAlertTriangle, IconCamera, IconMail, IconPassword, IconPhone, IconUser, IconUserPlus } from '@tabler/icons'
 import Link from 'next/link'
 import { getCookie } from 'cookies-next'
-import { AppContext } from 'next/app'
-import { LOCAL_STORAGE_KEYS } from '../../providers/appProvider'
+import { LOCAL_STORAGE_KEYS, useAppContext } from '../../providers/appProvider'
 import { useRouter } from 'next/router'
 import { showNotification } from '@mantine/notifications'
-import { makeRequest } from '../../config/config'
+import { RequestProps, makeRequest, makeRequestOne } from '../../config/config'
 import { EMOJIS, URLS } from '../../config/constants'
 import { displayErrors } from '../../config/functions'
 import { useForm } from '@mantine/form'
 
 const SignUp = (props: any) => {
-    const { loginStatus } = props
+    const { login_status } = useAppcontext()
     const { classes } = publicStyles()
     const router = useRouter()
 
@@ -57,34 +56,27 @@ const SignUp = (props: any) => {
 
 
     const handleSignup = () => {
-        makeRequest(URLS.REGISTER + "/", 'POST', {
-            'Content-Type': 'multipart/form-data',
-        }, form.values).then((res: any) => {
-            if (res.success) {
-                showNotification({
-                    title: `Congratulations ${EMOJIS['partypopper']} ${EMOJIS['partypopper']}`,
-                    message: "Account created successfully. Please login to continue",
-                    color: 'green',
-                    icon: <IconAlertCircle stroke={1.5} />,
-                })
-                router.push('/auth/login')
-            }
-            if (res.error) {
-                const errors = res.error.response?.data
-                if (typeof errors === 'object' && errors !== null && errors !== undefined) {
-                    displayErrors(form, errors)
-                }
-                showNotification({
-                    title: 'Error',
-                    message: res.error?.message,
-                    color: 'red',
-                    icon: <IconAlertTriangle stroke={1.5} />,
-                })
-            }
+        const requestOptions: RequestProps = {
+            url: `${URLS.REGISTER}/`,
+            method: 'POST',
+            extra_headers: {},
+            data: form.values,
+            params: {}
+        }
+        makeRequestOne(requestOptions).then((res: any) => {
+            showNotification({
+                title: `Congratulations ${EMOJIS['partypopper']} ${EMOJIS['partypopper']}`,
+                message: "Account created successfully. Please login to continue",
+                color: 'green',
+                icon: <IconAlertCircle stroke={1.5} />,
+            })
+            router.push('/auth/login')
         }).catch((error) => {
+            const errors = error?.response?.data
+            displayErrors(form, errors)
             showNotification({
                 title: 'Error',
-                message: "An error occurred. Please try again",
+                message: error?.message,
                 color: 'red',
                 icon: <IconAlertTriangle stroke={1.5} />,
             })
@@ -92,10 +84,10 @@ const SignUp = (props: any) => {
     }
 
     React.useEffect(() => {
-        if (loginStatus) {
+        if (login_status) {
             router.push('/')
         }
-    }, [])
+    }, [login_status])
 
     return (
         <>
@@ -156,7 +148,7 @@ const SignUp = (props: any) => {
                                             {...form.getInputProps('profile.phone_no')}
                                         />
                                     </Grid.Col>
-                                    <Grid.Col md={6}>
+                                    {/* <Grid.Col md={6}>
                                         <FileInput
                                             label="Profile Photo"
                                             placeholder='Select profile photo'
@@ -165,7 +157,7 @@ const SignUp = (props: any) => {
                                             accept="image/*"
                                             {...form.getInputProps('profile.profile_photo')}
                                         />
-                                    </Grid.Col>
+                                    </Grid.Col> */}
                                     <Grid.Col md={6}>
                                         <PasswordInput
                                             label="Password"
@@ -212,7 +204,7 @@ SignUp.PageLayout = HeaderAndFooterWrapper
 export async function getServerSideProps(context: any) {
 
     const status = getCookie(LOCAL_STORAGE_KEYS.login_status, context)
-    
+
     return {
         props: {
             loginStatus: status ? status : null

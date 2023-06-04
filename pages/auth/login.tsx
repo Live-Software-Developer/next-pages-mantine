@@ -3,20 +3,19 @@ import HeaderAndFooterWrapper from '../../layouts/HeaderAndFooterWrapper'
 import { Anchor, Box, Card, Container, Grid, Group, PasswordInput, Stack, Text, TextInput, Title, Center, Image } from '@mantine/core'
 import publicStyles from '../../styles/publicStyles'
 import { CallToActionButtonAction } from '../../components/cta/CallToActionButton'
-import { IconAlertOctagon, IconAlertTriangle, IconLogin, IconPassword, IconUser } from '@tabler/icons'
+import { IconAlertCircle, IconAlertOctagon, IconAlertTriangle, IconLogin, IconPassword, IconUser } from '@tabler/icons'
 import Link from 'next/link'
 import { LOCAL_STORAGE_KEYS, useAppContext } from '../../providers/appProvider'
 import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/router'
 import { useForm } from '@mantine/form'
-import { makeRequest } from '../../config/config'
+import { RequestProps, makeRequest, makeRequestOne } from '../../config/config'
 import { URLS } from '../../config/constants'
 import { displayErrors } from '../../config/functions'
 import { showNotification } from '@mantine/notifications'
 
 const Login = (props: any) => {
-    const { loginStatus } = props
-    const { login } = useAppContext()
+    const { login, login_status } = useAppContext()
 
     const { classes, theme } = publicStyles()
     const router = useRouter()
@@ -33,54 +32,42 @@ const Login = (props: any) => {
     })
 
     const handleLogin = () => {
-        const user_ = {
-            id: 1,
-            username: 'admin',
-            email: 'dalmas@gmail.com',
-            first_name: 'Dalmas',
-            last_name: 'Ogembo',
+        const requestOptions: RequestProps = {
+            url: `${URLS.LOGIN}/`,
+            method: "POST",
+            extra_headers: {},
+            data: form.values,
+            params: {}
         }
-        // login(user_, 'token')
-        // router.push('/')
-        makeRequest(URLS.LOGIN + "/", 'POST', {}, form.values).then((res: any) => {
-            if (res.success) {
-                login(res.success?.user, res.success?.token)
-                router.push('/')
-            }
-            if (res.error) {
-                const errors = res.error.response?.data
-                if (typeof errors === 'object' && errors !== null && errors !== undefined) {
-                    displayErrors(form, errors)
-                }
+        makeRequestOne(requestOptions).then((res: any) => {
+            login(res?.data?.user, res?.data?.token)
+        }).catch((error) => {
+            const errors = error?.response?.data
+            displayErrors(form, errors)
+            if (errors?.non_field_errors) {
                 showNotification({
                     title: 'Error',
-                    message: res.error?.message,
+                    message: "Unable to login with the provided credentials",
                     color: 'red',
                     icon: <IconAlertTriangle stroke={1.5} />,
                 })
             }
-        }).catch((error) => {
-            showNotification({
-                title: 'Error',
-                message: "An error occurred. Please try again",
-                color: 'red',
-                icon: <IconAlertTriangle stroke={1.5} />,
-            })
+            else {
+                showNotification({
+                    title: 'Error',
+                    message: error?.message,
+                    color: 'red',
+                    icon: <IconAlertTriangle stroke={1.5} />,
+                })
+            }
         })
-        login({username: "dalmas"}, "some token")
     }
 
     React.useEffect(() => {
-        if (loginStatus) {
-            showNotification({
-                title: 'Not Allowed',
-                message: "You are already logged in",
-                color: 'yellow',
-                icon: <IconAlertOctagon stroke={1.5} />,
-            })
+        if (login_status) {
             router.push('/')
         }
-    }, [])
+    }, [login_status])
 
     return (
         <>

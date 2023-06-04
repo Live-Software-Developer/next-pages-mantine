@@ -27,6 +27,7 @@ import { BLUE_DARK_COLOR, BLUE_BG_COLOR } from '../config/constants';
 import SidebarLink, { SidebarLinkGroupProps, SidebarLinkProps } from '../components/navigations/SidebarLink';
 import { IconArticle, IconCategory, IconCategory2, IconDashboard, IconHash, IconHome2, IconLogout, IconMessage, IconPhoto, IconPlus, IconQuote, IconSettings, IconTag, IconTags, IconUserCheck, IconUserPlus, IconUsers } from '@tabler/icons';
 import Link from 'next/link';
+import { useAppContext } from '../providers/appProvider';
 
 
 const sidebarLinkGroups: SidebarLinkGroupProps[] = [
@@ -152,9 +153,9 @@ interface AdminWrapperProps {
 }
 
 export default function AdminWrapper({ children }: AdminWrapperProps) {
+    const {logout, login_status} = useAppContext()
     const [opened, setOpened] = useState(false);
     const closeDrawer = () => setOpened((o) => !o)
-    const loggedIn = false
 
     const theme = useMantineTheme();
     const { classes } = publicStyles()
@@ -193,7 +194,10 @@ export default function AdminWrapper({ children }: AdminWrapperProps) {
                     <Navbar.Section>
                         <Stack style={{ height: "130px" }} justify="flex-end" spacing={0}>
                             <SidebarLink icon={<IconSettings stroke={1.5} />} label={'Settings'} href={'/'} click={closeDrawer} />
-                            <NavLink icon={<IconLogout stroke={1.5} />} label={'Logout'} onClick={closeDrawer} style={{
+                            <NavLink icon={<IconLogout stroke={1.5} />} label={'Logout'} onClick={() => {
+                                closeDrawer()
+                                logout()
+                            }} style={{
                                 borderRadius: theme.radius.md,
                             }} />
                         </Stack>

@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { DEFAULT_API_ROOT, BLUE_DARK_COLOR } from "./constants"
+import { BLUE_DARK_COLOR } from "./constants"
 import { MantineTheme } from "@mantine/core";
-import { AxiosHeaders } from "axios";
 
 export const getTheme = (theme: MantineTheme) => {
     return theme?.colorScheme === "dark"
@@ -73,8 +72,8 @@ export const makeRequest = async (url: string, method: string, extra_headers: Ob
     });
 }
 
-interface RequestProps {
-    url: string, method: string, extra_headers?: AxiosHeaders, data?: Object, params?: Object
+export interface RequestProps {
+    url: string, method: string, extra_headers?: any, data?: Object, params?: Object
 }
 
 export const makeRequestOne = async ({ url, method, extra_headers, data, params }: RequestProps) => {
@@ -123,4 +122,17 @@ export const limitChars = (word: any, limit: number) => {
         return word;
     }
     return word?.substring(0, limit) + "...";
+}
+
+
+export const alertModalOptions = {
+    radius: "lg",
+    size: "md",
+    centered: true,
+    padding: 0,
+    styles: {
+        header: {
+            display: "None"
+        }
+    },
 }
