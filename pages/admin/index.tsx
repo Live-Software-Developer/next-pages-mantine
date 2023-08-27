@@ -1,31 +1,29 @@
-import React, {useEffect, useState} from 'react'
-import { Prism } from '@mantine/prism';
+import React from 'react'
 import AdminWrapper from '../../layouts/AdminWrapper'
-import { useAppContext } from '../../providers/appProvider';
-import publicStyles from '../../styles/publicStyles';
+import requireAdminMiddleware from '../../middleware/requireAdminMiddleware'
 
 const Admin = () => {
-  const { user, logout, login_status } = useAppContext();
-    const [loggedInUser, setloggedInUser] = useState<any>(null)
-    const [loggedIn, setLoggedIn] = useState(false)
-
-    const { theme } = publicStyles()
-
-    useEffect(() => {
-        setLoggedIn(login_status)
-        setloggedInUser(JSON.parse(user ? user : "{}"))
-    }, [login_status, user])
-
   return (
     <div>
-      Admin
-      <Prism language='json'>
-        {JSON.stringify(loggedInUser ? loggedInUser : "{}", null, 4)}
-      </Prism>
+      Admin page
     </div>
   )
 }
 
-Admin.PageLayout = AdminWrapper
 
+export const getServerSideProps = async (context: any) => {
+  requireAdminMiddleware(context.req, context.res, () => { })
+
+  // const cookies = context.req.cookies
+  // const userDetails_: any = cookies[LOCAL_STORAGE_KEYS.user]
+  // const token = cookies[LOCAL_STORAGE_KEYS.token]
+
+  return {
+    props: {
+
+    }
+  }
+}
+
+Admin.PageLayout = AdminWrapper
 export default Admin

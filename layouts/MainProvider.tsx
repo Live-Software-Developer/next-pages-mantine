@@ -24,11 +24,11 @@ const MainProvider = ({ colorScheme_, children }: MainProviderProps) => {
     return (
         <AppProvider>
             <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-                <MantineProvider theme={{ colorScheme, fontFamily: "Bai Jamjuree" }} withGlobalStyles withNormalizeCSS>
+                <MantineProvider theme={{ colorScheme, fontFamily: "Bai Jamjuree", primaryColor: 'dark' }} withGlobalStyles withNormalizeCSS>
                     <ModalsProvider>
                         {children}
                     </ModalsProvider>
-                    <Notifications position='top-right' transitionDuration={1000} autoClose={10000} />
+                    <Notifications position='top-right' transitionDuration={500} autoClose={200} />
                 </MantineProvider>
             </ColorSchemeProvider>
         </AppProvider>

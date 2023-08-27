@@ -5,11 +5,18 @@ export const DEFAULT_API_ROOT = 'http://127.0.0.1:8000/api'
 // export const DEFAULT_APP_URL = "http://localhost:3000"
 export const DEFAULT_APP_URL = "https://next-pages-mantine-template.supercodehive.com"
 
+// Change all this to customize them
 export const APP_NAME = "Next JS Pages Mantine Template"
 export const SEPARATOR = "|"
 
 export const THEME_COOKIE_NAME = 'lsd-template-theme'
 export const APP_KEY = 'LSD_TEMPLATE'
+
+export const LOGO_URL = '/logos/logo-small.svg'
+export const ICON_URL = '/logos/icon.jpeg'
+
+export const DATE_MODIFIED = '2023-08-24'
+
 
 // App Colors
 // export const BLUE_DARK_COLOR = 'rgb(36, 42, 73)'
@@ -32,36 +39,33 @@ export const containerSize = "lg"
 
 export const URLS = {
     // AUTH
-    REGISTER: `${DEFAULT_API_ROOT}/account`,
-    LOGIN: `${DEFAULT_API_ROOT}/auth/login`,
-    REQUEST_PASSWORD_RESET: `${DEFAULT_API_ROOT}/auth/password-reset`,
-    PASSWORD_RESET_CONFIRM: `${DEFAULT_API_ROOT}/auth/password-reset/confirm`,
-    PASSWORD_RESET_VALIDATE_TOKEN: `${DEFAULT_API_ROOT}/auth/password-reset/validate-token`,
+    REGISTER: `/users/account`,
+    LOGIN: `/users/auth/login`,
+    REQUEST_PASSWORD_RESET: `/users/auth/password-reset`,
+    PASSWORD_RESET_CONFIRM: `/users/auth/password-reset/confirm`,
+    PASSWORD_RESET_VALIDATE_TOKEN: `/users/auth/password-reset/validate-token`,
 
     // CONTACT
-    CONTACT: `${DEFAULT_API_ROOT}/contact`,
+    CONTACT: `/contact`,
 
     // BLOG
-    BLOGS: `${DEFAULT_API_ROOT}/blogs`,
-    BLOG_CATEGORIES: `${DEFAULT_API_ROOT}/blog-categories`,
-    BLOG_TAGS: `${DEFAULT_API_ROOT}/blog-tags`,
-    BLOG_REPLIES: `${DEFAULT_API_ROOT}/blog-replies`,
+    BLOGS: `/blogs`,
+    BLOG_CATEGORIES: `/blogs/blog-categories`,
+    BLOG_TAGS: `/blogs/blog-tags`,
+    BLOG_REPLIES: `/blogs/blog-replies`,
+    RANDOM_BLOGS: `/blogs/random-blogs`,
 
     // PROJECTS
-    PROJECTS: `${DEFAULT_API_ROOT}/projects`,
+    PROJECTS: `/projects`,
 
     // SERVICES
-    SERVICES: `${DEFAULT_API_ROOT}/services`,
-
-    // HOSTING
-    HOSTING: `${DEFAULT_API_ROOT}/hosting`,
-    HOSTING_PLANS: `${DEFAULT_API_ROOT}/hosting/plans`,
+    SERVICES: `/services`,
 
     // USERS
-    USERS: `${DEFAULT_API_ROOT}/account`,
+    USERS: `/users/account`,
 
     // MEDIA
-    IMAGES: `${DEFAULT_API_ROOT}/images`,
+    MEDIA: `/media`,
 
 }
 
@@ -102,3 +106,35 @@ export const EMOJIS = {
 export const DEFAULT_MEDIA_PAGE_SIZE = 25
 
 export const LINK_WEIGHT = 500
+
+
+export const PRISM_LANGUAGES = [
+    "bash", 
+    "clike",
+    "cpp",
+    "css",
+    "css-extr",
+    "diff",
+    "git",
+    "graphql",
+    "handlebars",
+    "javascript",
+    "jsx",
+    "json",
+    "less",
+    "makefile",
+    "markdown",
+    "markup",
+    "objectivec",
+    "ocaml",
+    "python",
+    "reason",
+    "sass",
+    "scss",
+    "sql",
+    "stylus",
+    "tsx",
+    "typescript",
+    "wasm",
+    "yaml",
+]

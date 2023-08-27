@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import HeaderAndFooterWrapper from '../../layouts/HeaderAndFooterWrapper'
-import { Anchor, Box, Card, Container, Grid, Group, PasswordInput, Stack, Text, TextInput, Title, Center, Image } from '@mantine/core'
+import { Anchor, Box, Card, Container, Grid, Group, PasswordInput, Stack, Text, TextInput, Title, Center, Image, Loader } from '@mantine/core'
 import publicStyles from '../../styles/publicStyles'
 import { CallToActionButtonAction } from '../../components/cta/CallToActionButton'
 import { IconAlertCircle, IconAlertOctagon, IconAlertTriangle, IconLogin, IconPassword, IconUser } from '@tabler/icons'
@@ -9,12 +9,13 @@ import { LOCAL_STORAGE_KEYS, useAppContext } from '../../providers/appProvider'
 import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/router'
 import { useForm } from '@mantine/form'
-import { RequestProps, makeRequest, makeRequestOne } from '../../config/config'
-import { URLS } from '../../config/constants'
+import { RequestProps, getTheme, makeRequest, makeRequestOne } from '../../config/config'
+import { LOGO_URL, URLS } from '../../config/constants'
 import { displayErrors } from '../../config/functions'
 import { showNotification } from '@mantine/notifications'
 
 const Login = (props: any) => {
+    const [loading, setloading] = useState(false)
     const { login, login_status } = useAppContext()
 
     const { classes, theme } = publicStyles()
@@ -33,12 +34,14 @@ const Login = (props: any) => {
 
     const handleLogin = () => {
         const requestOptions: RequestProps = {
-            url: `${URLS.LOGIN}/`,
+            url: `${URLS.LOGIN}`,
             method: "POST",
             extra_headers: {},
             data: form.values,
-            params: {}
+            params: {},
+            useNext: false,
         }
+        setloading(true)
         makeRequestOne(requestOptions).then((res: any) => {
             login(res?.data?.user, res?.data?.token)
         }).catch((error) => {
@@ -60,6 +63,8 @@ const Login = (props: any) => {
                     icon: <IconAlertTriangle stroke={1.5} />,
                 })
             }
+        }).finally(() => {
+            setloading(false)
         })
     }
 
@@ -74,10 +79,12 @@ const Login = (props: any) => {
             <Box>
                 <Container size={"xs"} py={50}>
 
-                    <Card radius="lg" p={50}>
+                    <Card radius="lg" p={50} sx={theme => ({
+                        background: getTheme(theme) ? theme.colors.dark[6] : theme.colors.gray[1]
+                    })}>
                         <Stack>
                             <Center>
-                                <Image src={'/icon.png'} className={classes.image} width={80} />
+                                <Image src={LOGO_URL} className={classes.image} width={80} />
                             </Center>
                             <Title className={classes.title2} align='center'>Login</Title>
                             <Text align='center'>Please login to your account to get started.</Text>
@@ -104,7 +111,8 @@ const Login = (props: any) => {
                                     </Grid.Col>
                                     <Grid.Col>
                                         <Stack align='center' spacing={16}>
-                                            <CallToActionButtonAction label={'Login'} type='submit' icon={<IconLogin stroke={1.5} color='white' />} />
+                                            <CallToActionButtonAction label={'Login'} 
+                                            type='submit' icon={<IconLogin stroke={1.5} color='white' />} rightIcon={loading ? <Loader size={24} color='white' /> : <></>} />
                                             <Group spacing={4} p={0}>
                                                 <Text size="sm">
                                                     Forgot Password?

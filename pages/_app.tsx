@@ -5,7 +5,7 @@ import NextApp, { AppProps, AppContext } from 'next/app';
 import Head from 'next/head'
 import { getCookie } from 'cookies-next'
 import MainProvider from '../layouts/MainProvider'
-import { APP_NAME, DEFAULT_APP_URL, THEME_COOKIE_NAME } from '../config/constants'
+import { APP_NAME, DEFAULT_APP_URL, ICON_URL, THEME_COOKIE_NAME } from '../config/constants'
 import { ColorScheme } from '@mantine/core';
 
 
@@ -29,6 +29,7 @@ export default function App({ Component, pageProps, colorScheme, loginStatus }: 
     <>
       <Head>
         <title>{APP_NAME}</title>
+        <link rel="shortcut icon" href={ICON_URL}/>
       </Head>
       <Script src="https://embed.tawk.to/619959c96885f60a50bcbe1e/1fkvgdfr8" strategy='afterInteractive' />
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-06MXTHHEPV" strategy='afterInteractive' async />
@@ -55,7 +56,6 @@ App.getInitialProps = async (appContext: AppContext) => {
   return {
     ...appProps,
     colorScheme: getCookie(THEME_COOKIE_NAME, appContext.ctx) || 'dark',
-    user: getCookie(LOCAL_STORAGE_KEYS.user, appContext.ctx) || null,
     loginStatus: getCookie(LOCAL_STORAGE_KEYS.login_status, appContext.ctx) || false,
   };
 };

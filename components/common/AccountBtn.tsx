@@ -20,7 +20,7 @@ function AccountBtn() {
     }, [login_status, user])
 
     return (
-        <Menu shadow="md" width={200} radius="md" withArrow arrowSize={16} transitionProps={{ transition: "slide-up" }} zIndex={3000}>
+        <Menu shadow="md" width={200}  position='bottom-end' radius="md" arrowSize={16} transitionProps={{ transition: "slide-up" }} zIndex={3000}>
             <Menu.Target>
                 <Avatar size={44} radius="md" sx={{
                     background: getTheme(theme) ? theme.colors.dark[7] : theme.colors.gray[0],

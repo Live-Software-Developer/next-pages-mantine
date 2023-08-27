@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import React from 'react'
-import { APP_NAME, SEPARATOR } from '../../config/constants'
+import { SEPARATOR } from '../../config/constants'
 
 export interface SEOHeaderProps {
     url: string
@@ -9,14 +9,15 @@ export interface SEOHeaderProps {
     keywords: string
     image: string
     twitter_card: string
+    schema?: any
 }
 
 const SEOHeader = (props: SEOHeaderProps) => {
-    const { url, title, description, keywords, image, twitter_card } = props
+    const { url, title, description, keywords, image, twitter_card, schema } = props
 
     return (
         <Head>
-            <title>{`${APP_NAME} ${SEPARATOR} ${title}`}</title>
+            <title>{`${SEPARATOR} ${title}`}</title>
             <meta name="description" content={description} />
             <meta name="keywords" content={keywords} />
             {/* Open Graph / Facebook */}
@@ -32,6 +33,9 @@ const SEOHeader = (props: SEOHeaderProps) => {
             <meta property="twitter:title" content={title} />
             <meta property="twitter:description" content={description} />
             <meta property="twitter:image" content={image} />
+            <script
+                type='application/ld+json'
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
         </Head>
     )
 }

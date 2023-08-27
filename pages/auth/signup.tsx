@@ -1,21 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import HeaderAndFooterWrapper from '../../layouts/HeaderAndFooterWrapper'
-import { Anchor, Box, Card, Image, Container, FileInput, Grid, Group, PasswordInput, Stack, Text, TextInput, Title, Center } from '@mantine/core'
+import { Anchor, Box, Card, Image, Container, Grid, Group, PasswordInput, Stack, Text, TextInput, Title, Center, Loader } from '@mantine/core'
 import publicStyles from '../../styles/publicStyles'
 import { CallToActionButtonAction } from '../../components/cta/CallToActionButton'
-import { IconAlertCircle, IconAlertTriangle, IconCamera, IconMail, IconPassword, IconPhone, IconUser, IconUserPlus } from '@tabler/icons'
+import { IconAlertCircle, IconAlertTriangle, IconMail, IconPassword, IconPhone, IconUser, IconUserPlus } from '@tabler/icons'
 import Link from 'next/link'
 import { getCookie } from 'cookies-next'
 import { LOCAL_STORAGE_KEYS, useAppContext } from '../../providers/appProvider'
 import { useRouter } from 'next/router'
 import { showNotification } from '@mantine/notifications'
-import { RequestProps, makeRequest, makeRequestOne } from '../../config/config'
-import { EMOJIS, URLS } from '../../config/constants'
+import { RequestProps, getTheme, makeRequestOne } from '../../config/config'
+import { EMOJIS, LOGO_URL, URLS } from '../../config/constants'
 import { displayErrors } from '../../config/functions'
 import { useForm } from '@mantine/form'
 
 const SignUp = (props: any) => {
-    const { login_status } = useAppcontext()
+    const [loading, setLoading] = useState(false)
+    const { login_status } = useAppContext()
     const { classes } = publicStyles()
     const router = useRouter()
 
@@ -57,12 +58,14 @@ const SignUp = (props: any) => {
 
     const handleSignup = () => {
         const requestOptions: RequestProps = {
-            url: `${URLS.REGISTER}/`,
+            url: `${URLS.REGISTER}`,
             method: 'POST',
             extra_headers: {},
             data: form.values,
-            params: {}
+            params: {},
+            useNext: true,
         }
+        setLoading(true)
         makeRequestOne(requestOptions).then((res: any) => {
             showNotification({
                 title: `Congratulations ${EMOJIS['partypopper']} ${EMOJIS['partypopper']}`,
@@ -80,6 +83,8 @@ const SignUp = (props: any) => {
                 color: 'red',
                 icon: <IconAlertTriangle stroke={1.5} />,
             })
+        }).finally(() => {
+            setLoading(false)
         })
     }
 
@@ -93,10 +98,12 @@ const SignUp = (props: any) => {
         <>
             <Box>
                 <Container size={"xs"} py={50}>
-                    <Card radius="lg" p={50}>
+                    <Card radius="lg" p={50} sx={theme => ({
+                        background: getTheme(theme) ? theme.colors.dark[6] : theme.colors.gray[1]
+                    })}>
                         <Stack>
                             <Center>
-                                <Image src={'/icon.png'} className={classes.image} width={80} />
+                                <Image src={LOGO_URL} className={classes.image} width={80} />
                             </Center>
                             <Title className={classes.title2} align='center'>Sign Up</Title>
                             <Text align='center'>Create a new free account.</Text>
@@ -178,7 +185,8 @@ const SignUp = (props: any) => {
                                     </Grid.Col>
                                     <Grid.Col>
                                         <Stack align='center' spacing={16}>
-                                            <CallToActionButtonAction label={'Create Account'} type='submit' icon={<IconUserPlus stroke={1.5} color='white' />} />
+                                            <CallToActionButtonAction label={'Create Account'} type='submit' 
+                                            icon={<IconUserPlus stroke={1.5} color='white' />} rightIcon={loading ? <Loader size={24} color='white' /> : <></>} />
                                             <Group spacing={4} p={0}>
                                                 <Text size="sm">
                                                     Already have an account?

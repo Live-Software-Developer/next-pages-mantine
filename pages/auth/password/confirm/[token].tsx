@@ -1,6 +1,6 @@
-import React from 'react'
-import { Anchor, Box, Card, Container, Grid, Group, Stack, Text, TextInput, Title, Center, Image, PasswordInput } from '@mantine/core'
-import { IconAlertCircle, IconAlertOctagon, IconAlertTriangle, IconMail, IconPassword } from '@tabler/icons'
+import React, { useState } from 'react'
+import { Anchor, Box, Card, Container, Grid, Group, Stack, Text, Title, Center, Image, PasswordInput, Loader } from '@mantine/core'
+import { IconAlertOctagon, IconAlertTriangle, IconPassword } from '@tabler/icons'
 import Link from 'next/link'
 import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/router'
@@ -9,8 +9,8 @@ import { showNotification } from '@mantine/notifications'
 import publicStyles from '../../../../styles/publicStyles'
 import { CallToActionButtonAction } from '../../../../components/cta/CallToActionButton'
 import HeaderAndFooterWrapper from '../../../../layouts/HeaderAndFooterWrapper'
-import { RequestProps, alertModalOptions, getTheme, makeRequest, makeRequestOne } from '../../../../config/config'
-import { URLS } from '../../../../config/constants'
+import { RequestProps, alertModalOptions, getTheme, makeRequestOne } from '../../../../config/config'
+import { LOGO_URL, URLS } from '../../../../config/constants'
 import { displayErrors } from '../../../../config/functions'
 import { LOCAL_STORAGE_KEYS, useAppContext } from '../../../../providers/appProvider'
 import { useSearchParams } from 'next/navigation';
@@ -18,6 +18,7 @@ import { modals } from '@mantine/modals'
 import AlertModal from '../../../../components/notifications/AlertModal'
 
 const Reset = (props: any) => {
+    const [loading, setLoading] = useState(false)
     const { login_status } = useAppContext()
     const router = useRouter()
     const params = useSearchParams()
@@ -64,20 +65,16 @@ const Reset = (props: any) => {
 
     const handlePasswordReset = () => {
         const options: RequestProps = {
-            url: `${URLS.PASSWORD_RESET_CONFIRM}/`,
+            url: `${URLS.PASSWORD_RESET_CONFIRM}`,
             method: 'POST',
             extra_headers: {},
             data: { token: token, password: form.values.password },
-            params: {}
+            params: {},
+            useNext: true,
         }
+        setLoading(true)
         makeRequestOne(options).then((res: any) => {
             openAlertModal()
-            // showNotification({
-            //     title: 'Success',
-            //     message: "Password reset successful",
-            //     color: 'green',
-            //     icon: <IconAlertCircle stroke={1.5} />,
-            // })
         }).catch((error) => {
             console.log(error)
             const errors = error?.response?.data
@@ -98,6 +95,8 @@ const Reset = (props: any) => {
                     icon: <IconAlertTriangle stroke={1.5} />,
                 })
             }
+        }).finally(() => {
+            setLoading(false)
         })
     }
 
@@ -119,11 +118,11 @@ const Reset = (props: any) => {
                 <Container size={"xs"} py={50}>
 
                     <Card radius="lg" p={50} style={{
-                        background: getTheme(theme) ? theme.colors.dark[5] : theme.colors.gray[1]
+                        background: getTheme(theme) ? theme.colors.dark[6] : theme.colors.gray[1]
                     }}>
                         <Stack>
                             <Center>
-                                <Image src={'/icon.png'} className={classes.image} width={80} />
+                                <Image src={LOGO_URL} className={classes.image} width={80} />
                             </Center>
                             <Title className={classes.title2} align='center'>Reset Password</Title>
                             <Text align='center'>Please fill in the form below to reset your password</Text>
@@ -151,7 +150,8 @@ const Reset = (props: any) => {
                                     </Grid.Col>
                                     <Grid.Col>
                                         <Stack align='center' spacing={16}>
-                                            <CallToActionButtonAction label={'Reset Password'} type='submit' icon={<IconPassword stroke={1.5} color='white' />} />
+                                            <CallToActionButtonAction label={'Reset Password'} type='submit'
+                                                icon={<IconPassword stroke={1.5} color='white' />} rightIcon={loading ? <Loader size={24} color='white' /> : <></>} />
                                             <Group spacing={4} p={0}>
                                                 <Text size="sm">
                                                     Remember your password?

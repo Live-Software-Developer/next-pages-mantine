@@ -39,13 +39,9 @@ export const CallToActionButtonAction = (props: CallToActionButtonProps) => {
     const voidFunc = () => {}
     return (
         <Button sx={{
-            background: PRIMARY_SHADE[2],
             color: theme.white,
             height: "40px",
             minWidth: "200px",
-            ":hover": {
-                background: `${PRIMARY_SHADE[2]} !important`,
-            }
         }} radius="xl" type={type} leftIcon={icon} onClick={action ?? voidFunc} rightIcon={rightIcon ? rightIcon : null}>
             {label}
         </Button>

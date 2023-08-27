@@ -4,7 +4,8 @@ import { BLUE_DARK_COLOR, PRIMARY_SHADE } from '../config/constants';
 
 export default createStyles((theme) => ({
   image: {
-    height: getTheme(theme) ? "100%" : "90%",
+    // maxHeight: '80%',
+    width: '50px',
   },
   footerImage: {
     width: "200px",

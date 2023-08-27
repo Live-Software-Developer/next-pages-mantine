@@ -1,5 +1,5 @@
-import React from 'react'
-import { Anchor, Box, Card, Container, Grid, Group, Stack, Text, TextInput, Title, Center, Image } from '@mantine/core'
+import React, { useState } from 'react'
+import { Anchor, Box, Card, Container, Grid, Group, Stack, Text, TextInput, Title, Center, Image, Loader } from '@mantine/core'
 import { IconAlertOctagon, IconAlertTriangle, IconMail, IconPassword, IconAlertCircle } from '@tabler/icons'
 import Link from 'next/link'
 import { getCookie } from 'cookies-next'
@@ -9,12 +9,13 @@ import { showNotification } from '@mantine/notifications'
 import publicStyles from '../../../styles/publicStyles'
 import { CallToActionButtonAction } from '../../../components/cta/CallToActionButton'
 import HeaderAndFooterWrapper from '../../../layouts/HeaderAndFooterWrapper'
-import { RequestProps, makeRequestOne } from '../../../config/config'
-import { URLS } from '../../../config/constants'
+import { RequestProps, getTheme, makeRequestOne } from '../../../config/config'
+import { LOGO_URL, URLS } from '../../../config/constants'
 import { displayErrors } from '../../../config/functions'
 import { LOCAL_STORAGE_KEYS } from '../../../providers/appProvider'
 
 const Reset = (props: any) => {
+  const [loading, setLoading] = useState(false)
   const { loginStatus } = props
 
   const { classes, theme } = publicStyles()
@@ -31,12 +32,14 @@ const Reset = (props: any) => {
 
   const handlePasswordReset = () => {
     const options: RequestProps = {
-      url: `${URLS.REQUEST_PASSWORD_RESET}/`,
+      url: `${URLS.REQUEST_PASSWORD_RESET}`,
       method: 'POST',
       extra_headers: {},
-      data: {...form.values},
-      params: {}
+      data: { ...form.values },
+      params: {},
+      useNext: true,
     }
+    setLoading(true)
     makeRequestOne(options).then((res: any) => {
       showNotification({
         title: 'Success',
@@ -53,6 +56,8 @@ const Reset = (props: any) => {
         color: 'red',
         icon: <IconAlertTriangle stroke={1.5} />,
       })
+    }).finally(() => {
+      setLoading(false)
     })
   }
 
@@ -73,10 +78,12 @@ const Reset = (props: any) => {
       <Box>
         <Container size={"xs"} py={50}>
 
-          <Card radius="lg" p={50}>
+          <Card radius="lg" p={50} sx={theme => ({
+            background: getTheme(theme) ? theme.colors.dark[6] : theme.colors.gray[1]
+          })}>
             <Stack>
               <Center>
-                <Image src={'/icon.png'} className={classes.image} width={80} />
+                <Image src={LOGO_URL} className={classes.image} width={80} />
               </Center>
               <Title className={classes.title2} align='center'>Reset Password</Title>
               <Text align='center'>Please fill in the form below to reset your password</Text>
@@ -95,7 +102,8 @@ const Reset = (props: any) => {
                   </Grid.Col>
                   <Grid.Col>
                     <Stack align='center' spacing={16}>
-                      <CallToActionButtonAction label={'Request Password Reset'} type='submit' icon={<IconPassword stroke={1.5} color='white' />} />
+                      <CallToActionButtonAction label={'Request Password Reset'} type='submit'
+                        icon={<IconPassword stroke={1.5} color='white' />} rightIcon={loading ? <Loader size={24} color='white' /> : <></>} />
                       <Group spacing={4} p={0}>
                         <Text size="sm">
                           Remember your password?

@@ -1,49 +1,52 @@
-import { Container,  Stack, Text, Title, Card, Code } from "@mantine/core";
+import { Container, Stack, Title, Code, Box } from "@mantine/core";
 import HeaderAndFooterWrapper from "../layouts/HeaderAndFooterWrapper";
 import publicStyles from "../styles/publicStyles";
-import { BLUE_DARK_COLOR } from "../config/constants";
-import { getTheme } from "../config/config";
+import { URLS } from "../config/constants";
+import { makeRequestOne } from "../config/config";
+import { HeadingOne } from "../components/navigations/Heading";
+import Blogs from "../components/blogs/Blogs";
 
-
-interface TeaserCardProps {
-  title: string;
-  icon: React.ReactNode;
-  description: string;
-  color: string,
+interface IIndexPage {
+  articles: any
 }
 
-// Respect: We honor the dignity, preferences, and cultural backgrounds of every individual we serve.
-const TeaserCard = (props: TeaserCardProps) => {
-  const { title, icon, description, color } = props;
-  const { theme } = publicStyles();
-  return (
-    <Card p="xl" sx={{
-      background: getTheme(theme) ? BLUE_DARK_COLOR : theme.fn.lighten(color, 0.8),
-      borderRadius: theme.radius.lg,
-      height: "100%"
-    }}>
-      <Stack>
-        {icon}
-        <Title order={2} size={40}>{title}</Title>
-        <Text>
-          {description}
-        </Text>
-      </Stack>
-    </Card>
-  )
-}
-
-function IndexPage() {
+function IndexPage(props: IIndexPage) {
+  const { articles } = props
   const { classes, theme } = publicStyles()
   return (
     <div>
       <Container py={100}>
         <Title align="center">Next JS with Mantine Template using the <Code>pages</Code> folder.</Title>
+        {/* Blog section */}
+        <Box>
+          <Container size="lg" py={50}>
+            <Stack>
+              <HeadingOne subtitle='Our Blog' title="Latest News & Articles" description='Read latest news and articles in this space. Learn more about the tech world around you today.' />
+              <Blogs articles={articles} />
+            </Stack>
+          </Container>
+        </Box>
       </Container>
     </div>
   );
 }
 
+export const getStaticProps = async (ctx: any) => {
+  const articlesQuery: any = await makeRequestOne(
+    {
+      url: `${URLS.BLOGS}`,
+      method: "GET",
+      params: { limit: 10, fields: 'id,user,full_name,username,categories,title,description,image,slug,tags' }
+    }
+  )
+
+  return {
+    props: {
+      articles: articlesQuery?.data?.results,
+    },
+    revalidate: 10,
+  }
+}
 
 IndexPage.PageLayout = HeaderAndFooterWrapper;
 

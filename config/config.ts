@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { BLUE_DARK_COLOR } from "./constants"
+import { BLUE_DARK_COLOR, DEFAULT_API_ROOT } from "./constants"
 import { MantineTheme } from "@mantine/core";
 
 export const getTheme = (theme: MantineTheme) => {
@@ -73,13 +73,18 @@ export const makeRequest = async (url: string, method: string, extra_headers: Ob
 }
 
 export interface RequestProps {
-    url: string, method: string, extra_headers?: any, data?: Object, params?: Object
+    url: string, method: string, extra_headers?: any, data?: Object, params?: Object, useNext?: boolean
 }
 
-export const makeRequestOne = async ({ url, method, extra_headers, data, params }: RequestProps) => {
+export const makeRequestOne = async ({ url, method, extra_headers, data, params, useNext }: RequestProps) => {
+    let BASE_URL = DEFAULT_API_ROOT
+    if(useNext){
+        BASE_URL = '/api'
+    }
+    let URL = `${BASE_URL}${url}/`
     const options: AxiosRequestConfig = {
         method: method,
-        url: url,
+        url: URL,
         headers: {
             ...extra_headers
         },

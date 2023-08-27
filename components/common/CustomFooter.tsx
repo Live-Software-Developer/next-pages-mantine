@@ -1,6 +1,6 @@
 import React from 'react'
 import { Anchor, Box, ActionIcon, Center, Container, Divider, Grid, Group, Image, List, Stack, Text, Title } from '@mantine/core';
-import { PRIMARY_SHADE, BLUE_DARK_COLOR, APP_NAME, LINK_WEIGHT } from '../../config/constants';
+import { PRIMARY_SHADE, BLUE_DARK_COLOR, APP_NAME, LINK_WEIGHT, LOGO_URL } from '../../config/constants';
 import publicStyles from '../../styles/publicStyles';
 import { getTheme } from '../../config/config';
 import Link from 'next/link';
@@ -146,7 +146,7 @@ const CustomFooter = () => {
             <Grid >
               <Grid.Col md={3} sm={12}>
                 <Stack spacing="md">
-                  <img src={getTheme(theme) ? '/logo_PRIMARY_SHADE.png' : '/logo_black_small.png'} className={classes.footerImage} />
+                  <img src={LOGO_URL} className={classes.footerImage} />
                   <Text>
                   Lorem Ipsum Dolor Teaser Message!
                   </Text>
